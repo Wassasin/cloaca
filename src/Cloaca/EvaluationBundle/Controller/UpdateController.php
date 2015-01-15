@@ -126,7 +126,7 @@ class UpdateController extends Controller
 			return $x;
 		};
 
-		$evals = map(filterNonPath(scandir($this->web_dir.$this->new_dir)), function($dir) use ($this->web_dir, $this->new_dir, $this->old_dir, $mappingf, $new_courses) {
+		$evals = map(filterNonPath(scandir($this->web_dir.$this->new_dir)), function($dir) use ($mappingf, $new_courses) {
 			$files = recursedir($this->web_dir.$this->new_dir.$dir);
 			$old_files = recursedir($this->old_dir);
 			
