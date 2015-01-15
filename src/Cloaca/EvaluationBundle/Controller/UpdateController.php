@@ -130,8 +130,8 @@ class UpdateController extends Controller
 			$files = recursedir($this->web_dir.$this->new_dir.$dir);
 			$old_files = recursedir($this->old_dir);
 			
-			$paths = map($files, function($x) use ($this->new_dir, $dir) { return $this->new_dir.$dir.'/'.$x; });
-			$old_paths = map($old_files, function($x) use ($this->old_dir) { return $this->old_dir.$x; });
+			$paths = map($files, function($x) use ($dir) { return $this->new_dir.$dir.'/'.$x; });
+			$old_paths = map($old_files, function($x) { return $this->old_dir.$x; });
 
 			list($code, $name) = findOne(
 				map($files, function($x) {
