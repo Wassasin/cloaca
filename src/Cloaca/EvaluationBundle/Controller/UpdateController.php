@@ -150,6 +150,8 @@ class UpdateController extends Controller
 	
 	private function pushData($evals, $grades)
 	{
+		$em = $this->getDoctrine()->getManager();
+		
 		foreach($evals as $course)
 		{
 			$courseObj = $em->getRepository('Cloaca\EvaluationBundle\Entity\Course')
@@ -213,8 +215,6 @@ class UpdateController extends Controller
 
 	public function updateAction()
 	{
-		$em = $this->getDoctrine()->getManager();
-	
 		$this->root_dir = $this->get('kernel')->getRootDir() . '/../';
 		$this->web_dir = $this->root_dir.'web/';
 		
