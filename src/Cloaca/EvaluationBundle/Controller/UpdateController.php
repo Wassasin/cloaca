@@ -72,20 +72,51 @@ function recursedir($path, $prefix = '')
 
 class UpdateController extends Controller
 {
-    public function updateAction()
-	{
-		$em = $this->getDoctrine()->getManager();
-	
-		$root_dir = $this->get('kernel')->getRootDir() . '/../';
-		$web_dir = $root_dir.'web/';
-		
-		$data_dir = 'data/';
-		$new_dir = $data_dir.'new/';
-		$old_dir = $data_dir.'old/';
+	var $root_dir;
+	var $web_dir;
+	var $data_dir;
+	var $new_dir;
+	var $old_dir;
 
-		$mapping = array();
-		$new_courses = array('IBC022');
+	public function __construct()
+	{
+		parent::__construct();
 		
+		$this->root_dir = $this->get('kernel')->getRootDir() . '/../';
+		$this->web_dir = $this->root_dir.'web/';
+		
+		$this->data_dir = 'data/';
+		$this->new_dir = $this->data_dir.'new/';
+		$this->old_dir = $this->data_dir.'old/';
+	}
+
+	private function fetchGrades()
+	{
+		$grades = array();
+		foreach(explode("\n", file_get_contents($this->data_dir.'grades.csv')) as $line)
+		{
+			if($line == '')
+				continue;
+			
+			$grade = str_getcsv($line);
+			$grades[$grade[0]] = $grade;
+		}
+		
+		return $grades;
+	}
+
+	private function fetchMapping()
+	{
+		return array(); // TODO stub
+	}
+	
+	private function fetchNewCourses()
+	{
+		return array('IBC022'); // TODO stub
+	}
+	
+	private function fetchEvals()
+	{
 		$mappingf = function($x) use ($mapping)
 		{
 			foreach($mapping as $key => $value)
@@ -95,12 +126,12 @@ class UpdateController extends Controller
 			return $x;
 		};
 
-		$evals = map(filterNonPath(scandir($web_dir.$new_dir)), function($dir) use ($web_dir, $new_dir, $old_dir, $mappingf, $new_courses) {
-			$files = recursedir($web_dir.$new_dir.$dir);
-			$old_files = recursedir($old_dir);
+		$evals = map(filterNonPath(scandir($this->web_dir.$this->new_dir)), function($dir) use ($this->web_dir, $this->new_dir, $this->old_dir, $mappingf, $new_courses) {
+			$files = recursedir($this->web_dir.$this->new_dir.$dir);
+			$old_files = recursedir($this->old_dir);
 			
-			$paths = map($files, function($x) use ($new_dir, $dir) { return $new_dir.$dir.'/'.$x; });
-			$old_paths = map($old_files, function($x) use ($old_dir) { return $old_dir.$x; });
+			$paths = map($files, function($x) use ($this->new_dir, $dir) { return $this->new_dir.$dir.'/'.$x; });
+			$old_paths = map($old_files, function($x) use ($this->old_dir) { return $this->old_dir.$x; });
 
 			list($code, $name) = findOne(
 				map($files, function($x) {
@@ -116,8 +147,8 @@ class UpdateController extends Controller
 			
 			$old_code = $mappingf($code);
 
-            if(FALSE === preg_match('%([A-Z]+)-(.+)%', $dir, $code_matches))
-                throw new Exception("Directory not in format NWI-ABCXXX");
+			if(FALSE === preg_match('%([A-Z]+)-(.+)%', $dir, $code_matches))
+				throw new Exception("Directory not in format NWI-ABCXXX");
 
 			return array(
 				'dir' => $dir,
@@ -127,19 +158,23 @@ class UpdateController extends Controller
 			);
 		});
 		
+		return $evals;
+	}
+
+	public function updateAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+	
+		$mapping = $this->fetchMapping();
+		$new_courses = $this->fetchNewCourses();
+		
+		$evals = $this->fetchEvals();
+		
 		$evals_old = $evals;
 		
 		$evals_keys = map($evals, function($x) { return($x['dir']); });
 
-		$grades = array();
-		foreach(explode("\n", file_get_contents($data_dir.'grades.csv')) as $line)
-		{
-			if($line == '')
-				continue;
-			
-			$grade = str_getcsv($line);
-			$grades[$grade[0]] = $grade;
-		}
+		$grades = $this->fetchGrades();
 		
 		foreach($evals as $course)
 		{
