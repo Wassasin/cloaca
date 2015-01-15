@@ -14,8 +14,7 @@ security:
         in_memory:
             memory:
                 users:
-                    olc: { password: ue8HFQgT0Z0vZtt9, roles: [ 'ROLE_USER' ] }
-                    #wgeraedts: { password: test, roles: [ 'ROLE_ADMIN' ] }
+                    olc: { password: changethis, roles: [ 'ROLE_USER' ] }
 
     firewalls:
        main:
