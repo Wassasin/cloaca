@@ -80,8 +80,6 @@ class UpdateController extends Controller
 
 	public function __construct()
 	{
-		parent::__construct();
-		
 		$this->root_dir = $this->get('kernel')->getRootDir() . '/../';
 		$this->web_dir = $this->root_dir.'web/';
 		
