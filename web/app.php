@@ -1,5 +1,7 @@
 <?php
 
+ini_set('date.timezone', 'Europe/Amsterdam');
+
 use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
