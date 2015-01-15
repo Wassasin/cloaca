@@ -78,16 +78,6 @@ class UpdateController extends Controller
 	var $new_dir;
 	var $old_dir;
 
-	public function __construct()
-	{
-		$this->root_dir = $this->get('kernel')->getRootDir() . '/../';
-		$this->web_dir = $this->root_dir.'web/';
-		
-		$this->data_dir = 'data/';
-		$this->new_dir = $this->data_dir.'new/';
-		$this->old_dir = $this->data_dir.'old/';
-	}
-
 	private function fetchGrades()
 	{
 		$grades = array();
@@ -223,6 +213,13 @@ class UpdateController extends Controller
 	public function updateAction()
 	{
 		$em = $this->getDoctrine()->getManager();
+	
+		$this->root_dir = $this->get('kernel')->getRootDir() . '/../';
+		$this->web_dir = $this->root_dir.'web/';
+		
+		$this->data_dir = 'data/';
+		$this->new_dir = $this->data_dir.'new/';
+		$this->old_dir = $this->data_dir.'old/';
 	
 		$mapping = $this->fetchMapping();
 		$new_courses = $this->fetchNewCourses();
