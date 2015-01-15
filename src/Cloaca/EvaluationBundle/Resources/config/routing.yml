@@ -16,7 +16,7 @@ cloaca_evaluation_evaluation_preview:
 
 cloaca_evaluation_update:
     pattern:  /update
-    defaults: { _controller: CloacaEvaluationBundle:Default:update }
+    defaults: { _controller: CloacaEvaluationBundle:Update:update }
    
 cloaca_evaluation_generate:
     pattern:  /generate
