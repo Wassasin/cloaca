@@ -115,7 +115,7 @@ class UpdateController extends Controller
 		return array('IBC022'); // TODO stub
 	}
 	
-	private function fetchEvals()
+	private function fetchEvals($mapping, $new_courses)
 	{
 		$mappingf = function($x) use ($mapping)
 		{
@@ -143,8 +143,6 @@ class UpdateController extends Controller
 				function($x) { return($x != NULL); }
 			);
 
-			var_dump($files);
-			
 			$old_code = $mappingf($code);
 
 			if(FALSE === preg_match('%([A-Z]+)-(.+)%', $dir, $code_matches))
@@ -160,22 +158,9 @@ class UpdateController extends Controller
 		
 		return $evals;
 	}
-
-	public function updateAction()
-	{
-		$em = $this->getDoctrine()->getManager();
 	
-		$mapping = $this->fetchMapping();
-		$new_courses = $this->fetchNewCourses();
-		
-		$evals = $this->fetchEvals();
-		
-		$evals_old = $evals;
-		
-		$evals_keys = map($evals, function($x) { return($x['dir']); });
-
-		$grades = $this->fetchGrades();
-		
+	private function pushData($evals, $grades)
+	{
 		foreach($evals as $course)
 		{
 			$courseObj = $em->getRepository('Cloaca\EvaluationBundle\Entity\Course')
@@ -235,6 +220,20 @@ class UpdateController extends Controller
 			
 			$em->flush();
 		}
+	}
+
+	public function updateAction()
+	{
+		$em = $this->getDoctrine()->getManager();
+	
+		$mapping = $this->fetchMapping();
+		$new_courses = $this->fetchNewCourses();
+		
+		$evals = $this->fetchEvals($mapping, $new_courses);
+
+		$grades = $this->fetchGrades();
+		
+		$this->pushData($evals, $grades);
 
 		return $this->render('CloacaEvaluationBundle:Default:update.html.twig', array());
 	}
