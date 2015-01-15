@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+	<p>Je evaluatie is succesvol opgeslagen. Bedankt!</p>
+	
+	<a class="btn btn-success" href="{{ url('cloaca_evaluation_homepage') }}">Terug naar overzicht</a>
+	<a class="btn" href="{{ url('cloaca_evaluation_evaluation', {'course_id': course_id}) }}">Terug naar evaluatie</a>
+	<a class="btn btn-info" target="_blank" href="{{ url('cloaca_evaluation_evaluation_preview', {'course_id': course_id}) }}">Bekijk preview</a>
+{% endblock %}

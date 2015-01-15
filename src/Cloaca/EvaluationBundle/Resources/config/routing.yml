@@ -1,0 +1,23 @@
+cloaca_evaluation_homepage:
+    pattern:  /
+    defaults: { _controller: CloacaEvaluationBundle:Default:index }
+    
+cloaca_evaluation_evaluation:
+    pattern:  /evaluation/{course_id}
+    defaults: { _controller: CloacaEvaluationBundle:Default:evaluation }
+    
+cloaca_evaluation_evaluation_success:
+    pattern:  /evaluation_success/{course_id}
+    defaults: { _controller: CloacaEvaluationBundle:Default:evaluationSuccess }
+    
+cloaca_evaluation_evaluation_preview:
+    pattern:  /evaluation_preview/{course_id}
+    defaults: { _controller: CloacaEvaluationBundle:Default:evaluationPreview }
+
+cloaca_evaluation_update:
+    pattern:  /update
+    defaults: { _controller: CloacaEvaluationBundle:Default:update }
+   
+cloaca_evaluation_generate:
+    pattern:  /generate
+    defaults: { _controller: CloacaEvaluationBundle:Default:generate }

@@ -1,0 +1,9 @@
+services:
+    cloaca.evaluationbundle.twig.tribool_extension:
+        class: Cloaca\EvaluationBundle\Twig\TriboolExtension
+        tags:
+            - { name: twig.extension }
+    cloaca.evaluationbundle.twig.tex_extension:
+        class: Cloaca\EvaluationBundle\Twig\TexExtension
+        tags:
+            - { name: twig.extension }

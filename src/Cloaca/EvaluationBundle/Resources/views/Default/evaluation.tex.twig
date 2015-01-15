@@ -1,0 +1,135 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[dutch]{babel}
+\usepackage{xspace}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+
+\usepackage{titling}
+\setlength{\droptitle}{-2cm}
+
+{% if internal %}
+	\usepackage[printwatermark]{xwatermark}
+	\usepackage{xcolor}
+	\usepackage{graphicx}
+	\newwatermark[pages=1-10,color=gray!20,angle=45,scale=3,xpos=0,ypos=0]{DRAFT}
+{% endif %}
+
+
+
+% Document properties
+\title{
+	{{ course.getCode|tex }} {{ course.getName|tex }} \\
+	\small{Oordeel evaluaties 2014-2015}
+}
+\author{
+	Opleidingscommissie I\&I 2014-2015 \\
+	\small{niii-ocie@science.ru.nl}
+}
+\date{}
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+	\pagestyle{empty}
+	
+	\section{Brondocumenten}
+	
+	Het oordeel van de OLC is gebaseerd op de volgende documenten:
+	
+	\begin{itemize}
+		{% if course.getNewStudentEvals is not empty %}
+		\item De studentenevaluaties van het jaar 2014-2015
+		{% endif %}
+		{% if course.getNewTeacherEvals is not empty %}
+		\item De docentenevaluatie van het jaar 2014-2015
+		{% endif %}
+		{% if course.getOldTeacherEvals is not empty %}
+		\item De docentenevaluatie van het jaar 2013-2014
+		{% endif %}
+	\end{itemize}
+	
+	{% if course.getOldTeacherEvals is empty %}
+		\noindent Normaliter zou de OLC ook de docentenevaluatie van het jaar 2013-2014 bij dit oordeel betrekken. Deze had de OLC echter niet tot zijn beschikking{% if course.getIsNew %}, omdat het een nieuwe cursus betreft{% endif %}.
+	{% endif %}
+	{% if conclusion.has_all_files %}
+		\noindent Hiermee beschikt de OLC over alle documenten die relevant zijn om tot een oordeel te komen.
+	{% endif %}
+	
+	{% if course.getNewGrade != NULL %}
+		\subsection{Beoordeling uit studentenevaluaties}
+		\begin{tabular}{l|ccc}
+			& $x$ & $\sigma$ & $n$ \\
+	
+			\hline
+	
+			{% if course.getOldGrade != NULL %} oordeel over cursus 2012-2013 & {{ course.getOldGrade.getAverage }} & {{ course.getOldGrade.getStddev }} & {{ course.getOldGrade.getNumber }} \\ {% endif %}
+			oordeel over cursus 2013-2014 & {{ course.getNewGrade.getAverage }} & {{ course.getNewGrade.getStddev }} & {{ course.getNewGrade.getNumber }} \\
+			{% if course.getNewGradeTeacher != NULL %} oordeel over docent(en) 2013-2014 & {{ course.getNewGradeTeacher.getAverage }} & {{ course.getNewGradeTeacher.getStddev }} & {{ course.getNewGradeTeacher.getNumber }} \\ {% endif %}
+		\end{tabular}
+	{% endif %}
+	
+	\section{Oordeel opleidingscommissie}
+	
+	{% if evaluation.verdict == "A" %}
+		\noindent \emph{De OLC is van mening dat de docent \textbf{goed} op commentaar van studenten ingaat, dat verbeterplannen uit het verleden \textbf{goed} zijn uitgevoerd, en dat de plannen om de cursus te verbeteren \textbf{goed} zijn, en heeft verder \textbf{geen} commentaar op de docentenevaluatie.}
+	{% endif %}
+	{% if evaluation.verdict == "B" %}
+		\noindent \emph{De OLC is van mening dat de docent \textbf{voldoende} op commentaar van studenten ingaat, dat verbeterplannen uit het verleden \textbf{voldoende} zijn uitgevoerd, en dat de plannen om de cursus te verbeteren \textbf{voldoende} zijn, maar heeft \textbf{wel} het volgende commentaar op de docentenevaluatie.}
+	{% endif %}
+	{% if evaluation.verdict == "C" %}
+		\noindent \emph{De OLC is van mening dat de docent \textbf{niet} voldoende op commentaar van studenten ingaat, en/of dat verbeterplannen uit het verleden \textbf{niet} voldoende zijn uitgevoerd, en/of dat de plannen om de cursus te verbeteren \textbf{niet} voldoende zijn.}
+	{% endif %}
+	{% if evaluation.getVerdictJustification()|raw|trim != "" %}
+		\vspace{0.5em}\\
+		% Justificatie
+		{{ evaluation.getVerdictJustification()|raw }}
+	{% endif %}
+	
+	\vspace{1 em}
+	
+	% N.a.v. vereiste actie, code {1, 2}
+	{% if evaluation.action == "1" %}
+		\emph{De OLC heeft (uit de studenten- en docentenevaluaties) de indruk dat de cursus \textbf{niet} op korte termijn actie van de onderwijsdirectie nodig heeft.}
+	{% endif %}
+	{% if evaluation.action == "2" %}
+		\emph{De OLC heeft (uit de studenten- en docentenevaluaties) de indruk dat de cursus \textbf{wel} op korte termijn actie van de onderwijsdirectie nodig heeft.}
+	{% endif %}
+	{% if evaluation.getActionJustification()|raw|trim != "" %}
+		\vspace{0.5em}\\
+		% Justificatie
+		{{ evaluation.getActionJustification()|raw }}
+	{% endif %}
+	
+	{% if internal %}
+	
+	% De onderstaande gegevens komen niet in de uiteindelijke versie
+	\section{Interne notities}
+	
+		Deze cursus heeft als interne beoordelingscode: {{ evaluation.verdict }}{{ evaluation.action }}.
+	
+		\subsection{Samenvatting}
+	
+		{{ evaluation.summary|raw }}
+		
+		\subsection{Specifieke aandachtspunten}
+		\begin{tabular}{l|c}
+			De feedback uit de studentenevaluaties is afdoende verwerkt &
+			{{ evaluation.getProcessedFeedback|tribool('latex') }} \\
+	
+			De actiepunten die voorgaand jaar zijn voorgenomen zijn afdoende verwerkt &
+			{{ evaluation.getProcessedGoals|tribool('latex') }} \\
+	
+			De studenten geven aan in het algemeen tevreden te zijn over de cursus &
+			{{ evaluation.getStudentsOk|tribool('latex') }} \\
+	
+			Procedureel verliep de cursus goed (tentaminering, roostering, evaluaties etc.) &
+			{{ evaluation.getProceduralOk|tribool('latex') }} \\
+		\end{tabular}
+		
+		\subsection{Verklaring}
+		
+		{{ evaluation.miscJustification|raw }}
+		
+	{% endif %}
+	
+\end{document}

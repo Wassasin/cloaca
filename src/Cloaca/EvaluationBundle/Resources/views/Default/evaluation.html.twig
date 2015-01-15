@@ -1,0 +1,89 @@
+{% extends '::base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block textarea_widget %}
+	<textarea rows="10" style="width: 100%" {{ block('widget_attributes') }}>{{ value }}</textarea>
+{% endblock textarea_widget %}
+
+{% block body %}
+	<h1>{{ course.code }} {{ course.name }}</h1>
+	<h2>Documenten</h2>
+	<ul>
+		<li>
+			Docentenevaluatie 2013-2014:
+			{% if course.getOldTeacherEvals is empty %}
+			    niet beschikbaar
+			{% else %}
+			    <ul>
+			    {% for eval in course.getOldTeacherEvals %}
+				    <li><a target="_blank" href="{{ asset(eval) }}">{{ eval }}</a></li>
+			    {% endfor %}
+			    </ul>
+			{% endif %}
+		</li>
+		<li>
+			Docentenevaluatie 2014-2015:
+			{% if course.getNewTeacherEvals is empty %}
+			    niet beschikbaar
+			{% else %}
+			    <ul>
+			    {% for eval in course.getNewTeacherEvals %}
+				    <li><a target="_blank" href="{{ asset(eval) }}">{{ eval }}</a></li>
+			    {% endfor %}
+			    </ul>
+			{% endif %}
+		</li>
+		<li>
+			Studentenevaluatie 2014-2015:
+			{% if course.getNewStudentEvals is empty %}
+			    niet beschikbaar
+			{% else %}
+			    <ul>
+			    {% for eval in course.getNewStudentEvals %}
+				    <li><a target="_blank" href="{{ asset(eval) }}">{{ eval }}</a></li>
+			    {% endfor %}
+			    </ul>
+			{% endif %}
+		</li>
+	</ul>
+	
+	{% if course.getNewGrade != NULL %}
+	<h2>Beoordeling uit de studentevaluaties</h2>
+	<table class="table">
+		<tr>
+			<th>evaluatie</th>
+			<th>x</th>
+			<th>σ</th>
+			<th>n</th>
+		</tr>
+		{% if course.getOldGrade != NULL %}
+		<tr>
+			<td>cursus 2013-2014</td>
+			<td>{{ course.getOldGrade.getAverage }}</td>
+			<td>{{ course.getOldGrade.getStddev }}</td>
+			<td>{{ course.getOldGrade.getNumber }}</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<td>cursus 2014-2015</td>
+			<td>{{ course.getNewGrade.getAverage }}</td>
+			<td>{{ course.getNewGrade.getStddev }}</td>
+			<td>{{ course.getNewGrade.getNumber }}</td>
+		</tr>
+		<tr>
+			<td>docent(en) 2014-2015</td>
+			<td>{{ course.getNewGradeTeacher.getAverage }}</td>
+			<td>{{ course.getNewGradeTeacher.getStddev }}</td>
+			<td>{{ course.getNewGradeTeacher.getNumber }}</td>
+		</tr>
+	</table>
+	{% endif %}
+
+	<h2>Oordeel</h2>
+	<form width="100%" action="" method="post" {{ form_enctype(form) }}>
+		{{ form_widget(form) }}
+
+		<input class="btn" type="submit" />
+	</form>
+{% endblock %}

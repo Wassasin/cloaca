@@ -1,0 +1,88 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+	<h1>{{ course.code }} {{ course.name }}</h1>
+	<h2>Oordeel evaluaties 2014-2015</h2>
+	
+	<p>
+		Opleidingscommissie I&I 2014-2015<br />
+		niii-ocie@science.ru.nl
+	</p>
+	
+	<hr />
+	
+	<h2>Brondocumenten</h2>
+	
+	<p>Het oordeel van de OLC is gebaseerd op de volgende documenten:</p>
+	
+	<ul>
+		{% if course.getNewStudentEvals is not empty %}
+			<li>De studentenevaluaties van het jaar 2014-2015</li>
+		{% endif %}
+		{% if course.getNewTeacherEvals is not empty %}
+			<li>De docentenevaluatie van het jaar 2014-2015</li>
+		{% endif %}
+		{% if course.getOldTeacherEvals is not empty %}
+			<li>De docentenevaluatie van het jaar 2013-2014</li>
+		{% endif %}
+	</ul>
+	
+	<p>
+		{% if course.getOldTeacherEvals is empty %}
+			Normaliter zou de OLC ook de docentenevaluatie van het jaar 2013-2014 bij dit oordeel betrekken. Deze had de OLC echter niet tot zijn beschikking{% if course.getIsNew %}, omdat het een nieuwe cursus betreft{% endif %}.
+		{% endif %}
+		{% if conclusion.has_all_files %}
+			Hiermee beschikt de OLC over alle documenten die relevant zijn om tot een oordeel te komen.
+		{% endif %}
+	</p>
+	
+	<h2>Oordeel</h2>
+
+	<p>
+		{% if evaluation.verdict == "A" %}
+			De OLC is van mening dat de docent <strong>goed</strong> op commentaar van studenten ingaat, dat verbeterplannen uit het verleden <strong>goed</strong> zijn uitgevoerd, en dat de plannen om de cursus te verbeteren <strong>goed</strong> zijn, en heeft verder <strong>geen</strong> commentaar op de docentenevaluatie.
+		{% endif %}
+		{% if evaluation.verdict == "B" %}
+			De OLC is van mening dat de docent <strong>voldoende</strong> op commentaar van studenten ingaat, dat verbeterplannen uit het verleden <strong>voldoende</strong> zijn uitgevoerd, en dat de plannen om de cursus te verbeteren <strong>voldoende</strong> zijn, maar heeft <strong>wel</strong> het volgende commentaar op de docentenevaluatie.
+		{% endif %}
+		{% if evaluation.verdict == "C" %}
+			De OLC is van mening dat de docent <strong>niet</strong> voldoende op commentaar van studenten ingaat, en/of dat verbeterplannen uit het verleden <strong>niet</strong> voldoende zijn uitgevoerd, en/of dat de plannen om de cursus te verbeteren <strong>niet</strong> voldoende zijn.
+		{% endif %}
+	</p>
+	<p>
+		{{ evaluation.getVerdictJustification() }}
+	</p>
+
+	<hr />
+
+	<p>
+		{% if evaluation.action == "1" %}
+			De OLC heeft (uit de studenten- en docentenevaluaties) de indruk dat de cursus <strong>niet</strong> op korte termijn actie van de onderwijsdirectie nodig heeft.
+		{% endif %}
+		{% if evaluation.action == "2" %}
+			De OLC heeft (uit de studenten- en docentenevaluaties) de indruk dat de cursus <strong>wel</strong> op korte termijn actie van de onderwijsdirectie nodig heeft.
+		{% endif %}
+	</p>
+	<p>
+		{{ evaluation.getActionJustification() }}
+	</p>
+	
+	<table class="table table-condensed">
+		<tr>
+			<td>De feedback uit de studentenevaluaties is afdoende verwerkt</td>
+			<td>{{ evaluation.getProcessedFeedback|tribool }}</td>
+		</tr>
+		<tr>
+			<td>De actiepunten die voorgaand jaar zijn voorgenomen zijn afdoende verwerkt</td>
+			<td>{{ evaluation.getProcessedGoals|tribool }}</td>
+		</tr>
+		<tr>
+			<td>De studenten geven aan in het algemeen tevreden te zijn over de cursus</td>
+			<td>{{ evaluation.getStudentsOk|tribool }}</td>
+		</tr>
+		<tr>
+			<td>Procedureel verliep de cursus goed (tentaminering, roostering, evaluaties etc.)</td>
+			<td>{{ evaluation.getProceduralOk|tribool }}</td>
+		</tr>
+	</table>
+{% endblock %}

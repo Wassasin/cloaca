@@ -1,0 +1,3 @@
+cloaca_evaluation:
+    resource: "@CloacaEvaluationBundle/Resources/config/routing.yml"
+    prefix:   /
