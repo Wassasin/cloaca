@@ -114,12 +114,12 @@ class UpdateController extends Controller
 			return $x;
 		};
 
-		$evals = map(filterNonPath(scandir($this->web_dir.$this->new_dir)), function($dir) use ($mappingf, $new_courses) {
-			$files = recursedir($this->web_dir.$this->new_dir.$dir);
-			$old_files = recursedir($this->old_dir);
+		$evals = map(filterNonPath(scandir($this->web_dir.$this->new_dir)), function($dir) use ($obj, $mappingf, $new_courses) {
+			$files = recursedir($obj->web_dir.$obj->new_dir.$dir);
+			$old_files = recursedir($obj->old_dir);
 			
-			$paths = map($files, function($x) use ($dir) { return $this->new_dir.$dir.'/'.$x; });
-			$old_paths = map($old_files, function($x) { return $this->old_dir.$x; });
+			$paths = map($files, function($x) use ($obj, $dir) { return $obj->new_dir.$dir.'/'.$x; });
+			$old_paths = map($old_files, function($x) use ($obj) { return $obj->old_dir.$x; });
 
 			list($code, $name) = findOne(
 				map($files, function($x) {
