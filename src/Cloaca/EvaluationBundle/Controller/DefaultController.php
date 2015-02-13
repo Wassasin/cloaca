@@ -79,8 +79,9 @@ class DefaultController extends Controller
 		
 		$evaluation = $course->getEvaluation();
 		$conclusion = $evaluation->getConclusion();
-	
-		return $this->render('CloacaEvaluationBundle:Default:evaluation_preview.html.twig', array(
+		$postfix = $evaluation->getEnglish() ? '_en' : '';
+
+		return $this->render('CloacaEvaluationBundle:Default:evaluation_preview'.$postfix.'.html.twig', array(
 			'course' => $course,
 			'evaluation' => $evaluation,
 			'conclusion' => $conclusion
@@ -102,8 +103,9 @@ class DefaultController extends Controller
 		{
 			$course = $evaluation->getCourse();
 			$conclusion = $evaluation->getConclusion();
+			$postfix = $evaluation->getEnglish() ? '_en' : '';
 	
-			file_put_contents($generated_dir.$course->getCode().'.tex', $this->render('CloacaEvaluationBundle:Default:evaluation.tex.twig', array(
+			file_put_contents($generated_dir.$course->getCode().'.tex', $this->render('CloacaEvaluationBundle:Default:evaluation'.$postfix.'.tex.twig', array(
 				'course' => $course,
 				'evaluation' => $evaluation,
 				'conclusion' => $conclusion,

@@ -1,0 +1,90 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+	<h1>{{ course.code }} {{ course.name }}</h1>
+	<h2>Verdict evaluation 2014-2015</h2>
+	
+	<p>
+		Programme committee I&I 2014-2015<br />
+		niii-ocie@science.ru.nl
+	</p>
+	
+	<hr />
+	
+	<h2>Resource documents</h2>
+	
+	<p>The verdict of the programme committee is based on the following documents:</p>
+	
+	<ul>
+		{% if course.getNewStudentEvals is not empty %}
+			<li>The students' evaluation of 2014-2015</li>
+		{% endif %}
+		{% if course.getNewTeacherEvals is not empty %}
+			<li>The lecturers' evaluation of 2014-2015</li>
+		{% endif %}
+		{% if course.getOldTeacherEvals is not empty %}
+			<li>The lecturers' evaluation of 2013-2014</li>
+		{% endif %}
+	</ul>
+	
+	<p>
+		{% if course.getOldTeacherEvals is empty %}
+			In principle, the committee would also base this verdict on the lecturers' evaluation of 2013-2014. Unfortunately, this document was not available{% if course.getIsNew %}, as this verdict concerns a new course{% endif %}.
+		{% endif %}
+		{% if conclusion.has_all_files %}
+			With these documents, the committee possessed all relevant resources that are required to come to a verdict.
+		{% endif %}
+	</p>
+	
+	<h2>Verdict programme committee</h2>
+
+	<p>
+		{% if evaluation.verdict == "A" %}
+			The programme committee believes that the lecturer has responded to the students' comments <strong>adequately</strong>, that planned improvements from the past have been implemented <strong>adequately</strong>, that plans for further improvement are <strong>adequate</strong>, and <strong>does not</strong> have further comments on the evaluation.
+		{% endif %}
+		{% if evaluation.verdict == "B" %}
+			The programme committee believes that the lecturer has responded to the students' comments <strong>sufficiently</strong>, that planned improvements from the past have been implemented <strong>sufficiently</strong>, and that plans for further improvement are <strong>sufficient</strong>, but <strong>does</strong> have further comments on the evaluation.
+		{% endif %}
+		{% if evaluation.verdict == "C" %}
+			The programme committee believes that the lecturer has responded to the students' comments <strong>unsatisfactorily</strong>, that planned improvements from the past have been implemented <strong>unsatisfactorily</strong>, or that plans for further improvement are <strong>unsatisfactory</strong>.
+		{% endif %}
+	</p>
+	<p>
+		{{ evaluation.getVerdictJustification() }}
+	</p>
+
+	<hr />
+
+	<p>
+		{% if evaluation.action == "1" %}
+			Based on the students' and lecturers' evaluation, the programme committee believes that the course <strong>does not</strong> require short term action by the board of education.
+		{% endif %}
+		{% if evaluation.action == "2" %}
+			Based on the students' and lecturers' evaluation, the programme committee believes that the course <strong>does</strong> require short term action by the board of education.
+		{% endif %}
+	</p>
+	<p>
+		{{ evaluation.getActionJustification() }}
+	</p>
+	
+	<h2>Interne notities</h2>
+
+	<table class="table table-condensed">
+		<tr>
+			<td>De feedback uit de studentenevaluaties is afdoende verwerkt</td>
+			<td>{{ evaluation.getProcessedFeedback|tribool }}</td>
+		</tr>
+		<tr>
+			<td>De actiepunten die voorgaand jaar zijn voorgenomen zijn afdoende verwerkt</td>
+			<td>{{ evaluation.getProcessedGoals|tribool }}</td>
+		</tr>
+		<tr>
+			<td>De studenten geven aan in het algemeen tevreden te zijn over de cursus</td>
+			<td>{{ evaluation.getStudentsOk|tribool }}</td>
+		</tr>
+		<tr>
+			<td>Procedureel verliep de cursus goed (tentaminering, roostering, evaluaties etc.)</td>
+			<td>{{ evaluation.getProceduralOk|tribool }}</td>
+		</tr>
+	</table>
+{% endblock %}
