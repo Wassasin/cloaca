@@ -32,6 +32,11 @@ class Evaluation
 	protected $summary;
 	
 	/**
+	* @ORM\Column(type="boolean")
+	*/
+	protected $english;
+
+	/**
 	* @ORM\Column(type="actiondegree")
 	*/
 	protected $action;
@@ -204,6 +209,29 @@ class Evaluation
 	public function getSummary()
 	{
 		return $this->summary;
+	}
+
+	/**
+	* Set english
+	*
+	* @param string $english
+	* @return Evaluation
+	*/
+	public function setEnglish($english)
+	{
+		$this->english = $english;
+
+		return $this;
+	}
+
+	/**
+	* Get english
+	*
+	* @return boolean
+	*/
+	public function getEnglish()
+	{
+		return $this->english;
 	}
 
 	/**

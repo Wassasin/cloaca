@@ -159,6 +159,10 @@ class UpdateController extends Controller
 		return $evals;
 	}
 	
+	private function predictEnglish($coursecode) {
+		return false; // TODO
+	}
+
 	private function pushData($evals, $grades)
 	{
 		foreach($evals as $course)
