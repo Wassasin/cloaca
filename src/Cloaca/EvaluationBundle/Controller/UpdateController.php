@@ -136,10 +136,10 @@ class UpdateController extends Controller
 			$old_dir = $obj->web_dir.$obj->old_dir.'NWI-'.$old_code;
 
 			if(FALSE === preg_match('%([A-Z]+)-(.+)%', $dir, $code_matches))
-				throw new Exception("Directory not in format NWI-ABCXXX");
+				throw new \Exception("Directory not in format NWI-ABCXXX");
 
 			if(FALSE === file_exists($old_dir))
-				throw new Exception("OldDirectory not in format NWI-ABCXXX");
+				$old_dir = null;
 
 			return array(
 				'dir' => $dir,
@@ -182,7 +182,7 @@ class UpdateController extends Controller
 			if(array_key_exists($course['code'], $grades))
 			{
 				if(!array_key_exists($course['code'], $grades))
-					throw new Exception('No grades for course '.$course['code']);
+					throw new \Exception('No grades for course '.$course['code']);
 				
 				$grade = $grades[$course['code']];
 				
