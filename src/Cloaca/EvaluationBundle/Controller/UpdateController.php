@@ -133,13 +133,19 @@ class UpdateController extends Controller
 			);
 
 			$old_code = $mappingf($code);
+			$old_dir = $this->web_dir.$this->old_dir.'NWI-'.$old_code;
 
 			if(FALSE === preg_match('%([A-Z]+)-(.+)%', $dir, $code_matches))
 				throw new Exception("Directory not in format NWI-ABCXXX");
 
+			if(FALSE === file_exists($old_dir))
+				throw new Exception("OldDirectory not in format NWI-ABCXXX");
+
 			return array(
 				'dir' => $dir,
+				'old_dir' => $old_dir,
 				'code' => $code_matches[2],
+				'old_code' => $old_code,
 				'name' => $name,
 				'is_new' => in_array($code, $new_courses)
 			);
@@ -148,6 +154,10 @@ class UpdateController extends Controller
 		return $evals;
 	}
 	
+	private function predictEnglish($coursecode) {
+		return false; // TODO
+	}
+
 	private function pushData($evals, $grades)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -165,6 +175,7 @@ class UpdateController extends Controller
 			
 			$courseObj->setCode($course['code']);
 			$courseObj->setDirectory($course['dir']);
+			$courseObj->setOldDirectory($course['old_dir']);
 			$courseObj->setName($course['name']);
 			$courseObj->setIsNew($course['is_new']);
 			

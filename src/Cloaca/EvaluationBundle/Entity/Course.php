@@ -29,7 +29,12 @@ class Course
 	* @ORM\Column(type="string", nullable=true)
 	*/
 	protected $directory;
-	
+
+	/**
+	* @ORM\Column(type="string", nullable=true)
+	*/
+	protected $old_directory;
+
 	/**
 	* @ORM\Column(type="string", nullable=true)
 	*/
@@ -115,6 +120,29 @@ class Course
 	{
 		return $this->directory;
 	}
+	
+	/**
+	* Set old_directory
+	*
+	* @param string $old_directory
+	* @return Course
+	*/
+	public function setOldDirectory($old_directory)
+	{
+		$this->old_directory = $old_directory;
+
+		return $this;
+	}
+
+	/**
+	* Get old_directory
+	*
+	* @return string 
+	*/
+	public function getOldDirectory()
+	{
+		return $this->old_directory;
+	}
 
 	/**
 	* Set name
@@ -170,7 +198,7 @@ class Course
 	public function getOldTeacherEvals()
 	{
         $basedir = __DIR__.'/../../../../web/';
-	    $dir = 'data/old/'.$this->getDirectory().'/Docentenevaluatie/';
+	    $dir = 'data/old/'.$this->getOldDirectory().'/Docentenevaluatie/';
 	    $truedir = $basedir.$dir;
 	    
 	    if(!file_exists($truedir))

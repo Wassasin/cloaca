@@ -9,6 +9,8 @@ class EvaluationType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$builder->add('english', 'choice', array('label' => 'In welke taal wordt dit oordeel opgesteld?', 'choices' => array('Nederlands', 'Engels')));
+
 		$builder->add('summary', null, array('label' => 'Interne samenvatting. (wordt niet gepubliceerd)'));
 
 		$builder->add('verdict', new VerdictdegreeType(), array('label' => 'Algemeen oordeel n.a.v. documentatie.'));
