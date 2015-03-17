@@ -133,7 +133,7 @@ class UpdateController extends Controller
 			);
 
 			$old_code = $mappingf($code);
-			$old_dir = $this->web_dir.$this->old_dir.'NWI-'.$old_code;
+			$old_dir = $obj->web_dir.$obj->old_dir.'NWI-'.$old_code;
 
 			if(FALSE === preg_match('%([A-Z]+)-(.+)%', $dir, $code_matches))
 				throw new Exception("Directory not in format NWI-ABCXXX");
