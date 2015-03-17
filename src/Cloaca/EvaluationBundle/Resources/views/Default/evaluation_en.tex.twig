@@ -1,0 +1,135 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[dutch]{babel}
+\usepackage{xspace}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+
+\usepackage{titling}
+\setlength{\droptitle}{-2cm}
+
+{% if internal %}
+	\usepackage[printwatermark]{xwatermark}
+	\usepackage{xcolor}
+	\usepackage{graphicx}
+	\newwatermark[pages=1-10,color=gray!20,angle=45,scale=3,xpos=0,ypos=0]{DRAFT}
+{% endif %}
+
+
+
+% Document properties
+\title{
+	{{ course.getCode|tex }} {{ course.getName|tex }} \\
+	\small{Verdict evaluation 2014-2015}
+}
+\author{
+	Programme committee I\&I 2014-2015 \\
+	\small{niii-ocie@science.ru.nl}
+}
+\date{}
+\begin{document}
+	\maketitle
+	\thispagestyle{empty}
+	\pagestyle{empty}
+	
+	\section{Resource documents}
+	
+	The verdict of the programme committee is based on the following documents:
+	
+	\begin{itemize}
+		{% if course.getNewStudentEvals is not empty %}
+		\item The students' evaluation of 2014-2015
+		{% endif %}
+		{% if course.getNewTeacherEvals is not empty %}
+		\item The lecturers' evaluation of 2014-2015
+		{% endif %}
+		{% if course.getOldTeacherEvals is not empty %}
+		\item The lecturers' evaluation of 2013-2014
+		{% endif %}
+	\end{itemize}
+	
+	{% if course.getOldTeacherEvals is empty %}
+		\noindent In principle, the committee would also base this verdict on the lecturers' evaluation of 2013-2014. Unfortunately, this document was not available{% if course.getIsNew %}, as this verdict concerns a new course{% endif %}.
+	{% endif %}
+	{% if conclusion.has_all_files %}
+		\noindent With these documents, the committee possessed all relevant resources that are required to come to a verdict.
+	{% endif %}
+	
+	{% if course.getNewGrade != NULL %}
+		\subsection{Rating from the students' evaluation}
+		\begin{tabular}{l|ccc}
+			& $x$ & $\sigma$ & $n$ \\
+	
+			\hline
+	
+			{% if course.getOldGrade != NULL %} rating of the course 2012-2013 & {{ course.getOldGrade.getAverage }} & {{ course.getOldGrade.getStddev }} & {{ course.getOldGrade.getNumber }} \\ {% endif %}
+			rating of the course 2013-2014 & {{ course.getNewGrade.getAverage }} & {{ course.getNewGrade.getStddev }} & {{ course.getNewGrade.getNumber }} \\
+			{% if course.getNewGradeTeacher != NULL %} rating of the lecturer(s) 2013-2014 & {{ course.getNewGradeTeacher.getAverage }} & {{ course.getNewGradeTeacher.getStddev }} & {{ course.getNewGradeTeacher.getNumber }} \\ {% endif %}
+		\end{tabular}
+	{% endif %}
+	
+	\section{Verdict programme committee}
+	
+	{% if evaluation.verdict == "A" %}
+		\noindent \emph{The programme committee believes that the lecturer has responded to the students' comments \textbf{adequately}, that planned improvements from the past have been implemented \textbf{adequately}, that plans for further improvement are \textbf{adequate}, and \textbf{does not} have further comments on the evaluation.}
+	{% endif %}
+	{% if evaluation.verdict == "B" %}
+		\noindent \emph{The programme committee believes that the lecturer has responded to the students' comments \textbf{sufficiently}, that planned improvements from the past have been implemented \textbf{sufficiently}, and that plans for further improvement are \textbf{sufficient}, but \textbf{does} have further comments on the evaluation.}
+	{% endif %}
+	{% if evaluation.verdict == "C" %}
+		\noindent \emph{The programme committee believes that the lecturer has responded to the students' comments \textbf{unsatisfactorily}, that planned improvements from the past have been implemented \textbf{unsatisfactorily}, or that plans for further improvement are \textbf{unsatisfactory}.}
+	{% endif %}
+	{% if evaluation.getVerdictJustification()|raw|trim != "" %}
+		\vspace{0.5em}\\
+		% Justificatie
+		{{ evaluation.getVerdictJustification()|raw }}
+	{% endif %}
+	
+	\vspace{1 em}
+	
+	% N.a.v. vereiste actie, code {1, 2}
+	{% if evaluation.action == "1" %}
+		\emph{Based on the students' and lecturers' evaluation, the programme committee believes that the course \textbf{does not} require short term action by the board of education.}
+	{% endif %}
+	{% if evaluation.action == "2" %}
+		\emph{Based on the students' and lecturers' evaluation, the programme committee believes that the course \textbf{does} require short term action by the board of education.}
+	{% endif %}
+	{% if evaluation.getActionJustification()|raw|trim != "" %}
+		\vspace{0.5em}\\
+		% Justificatie
+		{{ evaluation.getActionJustification()|raw }}
+	{% endif %}
+	
+	{% if internal %}
+	
+	% De onderstaande gegevens komen niet in de uiteindelijke versie
+	\section{Interne notities}
+	
+		Deze cursus heeft als interne beoordelingscode: {{ evaluation.verdict }}{{ evaluation.action }}.
+	
+		\subsection{Samenvatting}
+	
+		{{ evaluation.summary|raw }}
+		
+		\subsection{Specifieke aandachtspunten}
+		\begin{tabular}{l|c}
+			De feedback uit de studentenevaluaties is afdoende verwerkt &
+			{{ evaluation.getProcessedFeedback|tribool('latex') }} \\
+	
+			De actiepunten die voorgaand jaar zijn voorgenomen zijn afdoende verwerkt &
+			{{ evaluation.getProcessedGoals|tribool('latex') }} \\
+	
+			De studenten geven aan in het algemeen tevreden te zijn over de cursus &
+			{{ evaluation.getStudentsOk|tribool('latex') }} \\
+	
+			Procedureel verliep de cursus goed (tentaminering, roostering, evaluaties etc.) &
+			{{ evaluation.getProceduralOk|tribool('latex') }} \\
+		\end{tabular}
+		
+		\subsection{Verklaring}
+		
+		{{ evaluation.miscJustification|raw }}
+		
+	{% endif %}
+	
+\end{document}
