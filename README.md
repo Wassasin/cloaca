@@ -34,6 +34,7 @@ parameters:
 Cloaca expects the following in `web/data`:
 * A directory `new` containing folders for each course, named according to their course code. The contents of these folders is explained below.
 * A directory `old` containing similar folders for last year.
+* A `mapping.csv` file that specifies new courses and courses that had their course ID changed. This file is identical to the one required by the [vakkenranking](https://github.com/wassasin/vakkenranking) project.
 * A `grades.csv` file listing the grade details per course, as produced by the [vakkenranking](https://github.com/wassasin/vakkenranking) project.
 
 The course folders inside `new` and `old` should contain two folders, `Studentenevaluaties` and `Docentenevaluaties`. All files contained in these folders are listed on the evaluation forms, for the benefit of the evaluator. There needs to be at least one .xls file in `Studentenevaluaties` that adheres to the regex listed in the [UpdateController](src/Cloaca/EvaluationBundle/Controller/UpdateController.php). This is the typical format of student evaluation files exported from the faculty system.

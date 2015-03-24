@@ -92,15 +92,22 @@ class UpdateController extends Controller
 		
 		return $grades;
 	}
-
-	private function fetchMapping()
-	{
-		return array(); // TODO stub
-	}
 	
-	private function fetchNewCourses()
+	private function fetchMappingAndNew()
 	{
-		return array('IBC022'); // TODO stub
+		$result = array('mapping' => array(), 'new' => array());
+		foreach(explode("\n", file_get_contents($this->data_dir.'mapping.csv')) as $line)
+		{
+			if($line == '')
+				continue;
+
+			$map_entry = str_getcsv($line);
+			if ($map_entry[1] == 'new')
+				$result['new'][] = $map_entry[0];
+			else
+				$result['mapping'][$map_entry[0]] = $map_entry[1];
+		}
+		return $result;
 	}
 	
 	private function fetchEvals($mapping, $new_courses)
@@ -233,8 +240,9 @@ class UpdateController extends Controller
 		$this->new_dir = $this->data_dir.'new/';
 		$this->old_dir = $this->data_dir.'old/';
 	
-		$mapping = $this->fetchMapping();
-		$new_courses = $this->fetchNewCourses();
+		$mapping_and_new = $this->fetchMappingAndNew();
+		$mapping = $mapping_and_new['mapping'];
+		$new_courses = $mapping_and_new['new'];
 		
 		$evals = $this->fetchEvals($mapping, $new_courses);
 
