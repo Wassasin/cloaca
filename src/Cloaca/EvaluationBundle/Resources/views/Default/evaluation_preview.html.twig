@@ -2,10 +2,10 @@
 
 {% block body %}
 	<h1>{{ course.code }} {{ course.name }}</h1>
-	<h2>Oordeel evaluaties 2014-2015</h2>
+	<h2>Oordeel evaluaties {{ year }}-{{ year+1 }}</h2>
 	
 	<p>
-		Opleidingscommissie I&I 2014-2015<br />
+		Opleidingscommissie I&I {{ year }}-{{ year+1 }}<br />
 		niii-ocie@science.ru.nl
 	</p>
 	
@@ -17,19 +17,19 @@
 	
 	<ul>
 		{% if course.getNewStudentEvals is not empty %}
-			<li>De studentenevaluaties van het jaar 2014-2015</li>
+			<li>De studentenevaluaties van het jaar {{ year }}-{{ year+1 }}</li>
 		{% endif %}
 		{% if course.getNewTeacherEvals is not empty %}
-			<li>De docentenevaluatie van het jaar 2014-2015</li>
+			<li>De docentenevaluatie van het jaar {{ year }}-{{ year+1 }}</li>
 		{% endif %}
 		{% if course.getOldTeacherEvals is not empty %}
-			<li>De docentenevaluatie van het jaar 2013-2014</li>
+			<li>De docentenevaluatie van het jaar {{ year-1 }}-{{ year }}</li>
 		{% endif %}
 	</ul>
 	
 	<p>
 		{% if course.getOldTeacherEvals is empty %}
-			Normaliter zou de OLC ook de docentenevaluatie van het jaar 2013-2014 bij dit oordeel betrekken. Deze had de OLC echter niet tot zijn beschikking{% if course.getIsNew %}, omdat het een nieuwe cursus betreft{% endif %}.
+			Normaliter zou de OLC ook de docentenevaluatie van het jaar {{ year-1 }}-{{ year }} bij dit oordeel betrekken. Deze had de OLC echter niet tot zijn beschikking{% if course.getIsNew %}, omdat het een nieuwe cursus betreft{% endif %}.
 		{% endif %}
 		{% if conclusion.has_all_files %}
 			Hiermee beschikt de OLC over alle documenten die relevant zijn om tot een oordeel te komen.

@@ -11,7 +11,7 @@
 	<h2>Documenten</h2>
 	<ul>
 		<li>
-			Docentenevaluatie 2013-2014:
+			Docentenevaluatie {{ year-1 }}-{{ year }}:
 			{% if course.getOldTeacherEvals is empty %}
 			    niet beschikbaar
 			{% else %}
@@ -23,7 +23,7 @@
 			{% endif %}
 		</li>
 		<li>
-			Docentenevaluatie 2014-2015:
+			Docentenevaluatie {{ year }}-{{ year+1 }}:
 			{% if course.getNewTeacherEvals is empty %}
 			    niet beschikbaar
 			{% else %}
@@ -35,7 +35,7 @@
 			{% endif %}
 		</li>
 		<li>
-			Studentenevaluatie 2014-2015:
+			Studentenevaluatie {{ year }}-{{ year+1 }}:
 			{% if course.getNewStudentEvals is empty %}
 			    niet beschikbaar
 			{% else %}
@@ -59,20 +59,20 @@
 		</tr>
 		{% if course.getOldGrade != NULL %}
 		<tr>
-			<td>cursus 2013-2014</td>
+			<td>cursus {{ year-1 }}-{{ year }}</td>
 			<td>{{ course.getOldGrade.getAverage }}</td>
 			<td>{{ course.getOldGrade.getStddev }}</td>
 			<td>{{ course.getOldGrade.getNumber }}</td>
 		</tr>
 		{% endif %}
 		<tr>
-			<td>cursus 2014-2015</td>
+			<td>cursus {{ year }}-{{ year+1 }}</td>
 			<td>{{ course.getNewGrade.getAverage }}</td>
 			<td>{{ course.getNewGrade.getStddev }}</td>
 			<td>{{ course.getNewGrade.getNumber }}</td>
 		</tr>
 		<tr>
-			<td>docent(en) 2014-2015</td>
+			<td>docent(en) {{ year }}-{{ year+1 }}</td>
 			<td>{{ course.getNewGradeTeacher.getAverage }}</td>
 			<td>{{ course.getNewGradeTeacher.getStddev }}</td>
 			<td>{{ course.getNewGradeTeacher.getNumber }}</td>

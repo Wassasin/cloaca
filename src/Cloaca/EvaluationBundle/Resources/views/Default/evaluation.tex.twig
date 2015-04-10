@@ -20,10 +20,10 @@
 % Document properties
 \title{
 	{{ course.getCode|tex }} {{ course.getName|tex }} \\
-	\small{Oordeel evaluaties 2014-2015}
+	\small{Oordeel evaluaties {{ year }}-{{ year+1 }}}
 }
 \author{
-	Opleidingscommissie I\&I 2014-2015 \\
+	Opleidingscommissie I\&I {{ year }}-{{ year+1 }} \\
 	\small{niii-ocie@science.ru.nl}
 }
 \date{}
@@ -38,18 +38,18 @@
 	
 	\begin{itemize}
 		{% if course.getNewStudentEvals is not empty %}
-		\item De studentenevaluaties van het jaar 2014-2015
+		\item De studentenevaluaties van het jaar {{ year }}-{{ year+1 }}
 		{% endif %}
 		{% if course.getNewTeacherEvals is not empty %}
-		\item De docentenevaluatie van het jaar 2014-2015
+		\item De docentenevaluatie van het jaar {{ year }}-{{ year+1 }}
 		{% endif %}
 		{% if course.getOldTeacherEvals is not empty %}
-		\item De docentenevaluatie van het jaar 2013-2014
+		\item De docentenevaluatie van het jaar {{ year-1 }}-{{ year }}
 		{% endif %}
 	\end{itemize}
 	
 	{% if course.getOldTeacherEvals is empty %}
-		\noindent Normaliter zou de OLC ook de docentenevaluatie van het jaar 2013-2014 bij dit oordeel betrekken. Deze had de OLC echter niet tot zijn beschikking{% if course.getIsNew %}, omdat het een nieuwe cursus betreft{% endif %}.
+		\noindent Normaliter zou de OLC ook de docentenevaluatie van het jaar {{ year-1 }}-{{ year }} bij dit oordeel betrekken. Deze had de OLC echter niet tot zijn beschikking{% if course.getIsNew %}, omdat het een nieuwe cursus betreft{% endif %}.
 	{% endif %}
 	{% if conclusion.has_all_files %}
 		\noindent Hiermee beschikt de OLC over alle documenten die relevant zijn om tot een oordeel te komen.
@@ -66,9 +66,9 @@
 	
 			\hline
 	
-			{% if course.getOldGrade != NULL %} oordeel over cursus 2012-2013 & {{ course.getOldGrade.getAverage }} & {{ course.getOldGrade.getStddev }} & {{ course.getOldGrade.getNumber }} \\ {% endif %}
-			oordeel over cursus 2013-2014 & {{ course.getNewGrade.getAverage }} & {{ course.getNewGrade.getStddev }} & {{ course.getNewGrade.getNumber }} \\
-			{% if course.getNewGradeTeacher != NULL %} oordeel over docent(en) 2013-2014 & {{ course.getNewGradeTeacher.getAverage }} & {{ course.getNewGradeTeacher.getStddev }} & {{ course.getNewGradeTeacher.getNumber }} \\ {% endif %}
+			{% if course.getOldGrade != NULL %} oordeel over cursus {{ year-1 }}-{{ year }} & {{ course.getOldGrade.getAverage }} & {{ course.getOldGrade.getStddev }} & {{ course.getOldGrade.getNumber }} \\ {% endif %}
+			oordeel over cursus {{ year }}-{{ year+1 }} & {{ course.getNewGrade.getAverage }} & {{ course.getNewGrade.getStddev }} & {{ course.getNewGrade.getNumber }} \\
+			{% if course.getNewGradeTeacher != NULL %} oordeel over docent(en) {{ year }}-{{ year+1 }} & {{ course.getNewGradeTeacher.getAverage }} & {{ course.getNewGradeTeacher.getStddev }} & {{ course.getNewGradeTeacher.getNumber }} \\ {% endif %}
 		\end{tabular}
 	{% endif %}
 	
