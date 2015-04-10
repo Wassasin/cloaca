@@ -20,10 +20,10 @@
 % Document properties
 \title{
 	{{ course.getCode|tex }} {{ course.getName|tex }} \\
-	\small{Verdict evaluation 2014-2015}
+	\small{Verdict evaluation {{ year }}-{{ year+1 }}}
 }
 \author{
-	Programme committee I\&I 2014-2015 \\
+	Programme committee I\&I {{ year }}-{{ year+1 }} \\
 	\small{niii-ocie@science.ru.nl}
 }
 \date{}
@@ -38,18 +38,18 @@
 	
 	\begin{itemize}
 		{% if course.getNewStudentEvals is not empty %}
-		\item The students' evaluation of 2014-2015
+		\item The students' evaluation of {{ year }}-{{ year+1 }}
 		{% endif %}
 		{% if course.getNewTeacherEvals is not empty %}
-		\item The lecturers' evaluation of 2014-2015
+		\item The lecturers' evaluation of {{ year }}-{{ year+1 }}
 		{% endif %}
 		{% if course.getOldTeacherEvals is not empty %}
-		\item The lecturers' evaluation of 2013-2014
+		\item The lecturers' evaluation of {{ year-1 }}-{{ year }}
 		{% endif %}
 	\end{itemize}
 	
 	{% if course.getOldTeacherEvals is empty %}
-		\noindent In principle, the committee would also base this verdict on the lecturers' evaluation of 2013-2014. Unfortunately, this document was not available{% if course.getIsNew %}, as this verdict concerns a new course{% endif %}.
+		\noindent In principle, the committee would also base this verdict on the lecturers' evaluation of {{ year-1 }}-{{ year }}. Unfortunately, this document was not available{% if course.getIsNew %}, as this verdict concerns a new course{% endif %}.
 	{% endif %}
 	{% if conclusion.has_all_files %}
 		\noindent With these documents, the committee possessed all relevant resources that are required to come to a verdict.
@@ -66,9 +66,9 @@
 	
 			\hline
 	
-			{% if course.getOldGrade != NULL %} rating of the course 2012-2013 & {{ course.getOldGrade.getAverage }} & {{ course.getOldGrade.getStddev }} & {{ course.getOldGrade.getNumber }} \\ {% endif %}
-			rating of the course 2013-2014 & {{ course.getNewGrade.getAverage }} & {{ course.getNewGrade.getStddev }} & {{ course.getNewGrade.getNumber }} \\
-			{% if course.getNewGradeTeacher != NULL %} rating of the lecturer(s) 2013-2014 & {{ course.getNewGradeTeacher.getAverage }} & {{ course.getNewGradeTeacher.getStddev }} & {{ course.getNewGradeTeacher.getNumber }} \\ {% endif %}
+			{% if course.getOldGrade != NULL %} rating of the course {{ year-1 }}-{{ year }} & {{ course.getOldGrade.getAverage }} & {{ course.getOldGrade.getStddev }} & {{ course.getOldGrade.getNumber }} \\ {% endif %}
+			rating of the course {{ year }}-{{ year+1 }} & {{ course.getNewGrade.getAverage }} & {{ course.getNewGrade.getStddev }} & {{ course.getNewGrade.getNumber }} \\
+			{% if course.getNewGradeTeacher != NULL %} rating of the lecturer(s) {{ year }}-{{ year+1 }} & {{ course.getNewGradeTeacher.getAverage }} & {{ course.getNewGradeTeacher.getStddev }} & {{ course.getNewGradeTeacher.getNumber }} \\ {% endif %}
 		\end{tabular}
 	{% endif %}
 	

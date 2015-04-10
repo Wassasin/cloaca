@@ -2,10 +2,10 @@
 
 {% block body %}
 	<h1>{{ course.code }} {{ course.name }}</h1>
-	<h2>Verdict evaluation 2014-2015</h2>
+	<h2>Verdict evaluation {{ year }}-{{ year+1 }}</h2>
 	
 	<p>
-		Programme committee I&I 2014-2015<br />
+		Programme committee I&I {{ year }}-{{ year+1 }}<br />
 		niii-ocie@science.ru.nl
 	</p>
 	
@@ -17,19 +17,19 @@
 	
 	<ul>
 		{% if course.getNewStudentEvals is not empty %}
-			<li>The students' evaluation of 2014-2015</li>
+			<li>The students' evaluation of {{ year }}-{{ year+1 }}</li>
 		{% endif %}
 		{% if course.getNewTeacherEvals is not empty %}
-			<li>The lecturers' evaluation of 2014-2015</li>
+			<li>The lecturers' evaluation of {{ year }}-{{ year+1 }}</li>
 		{% endif %}
 		{% if course.getOldTeacherEvals is not empty %}
-			<li>The lecturers' evaluation of 2013-2014</li>
+			<li>The lecturers' evaluation of {{ year-1 }}-{{ year }}</li>
 		{% endif %}
 	</ul>
 	
 	<p>
 		{% if course.getOldTeacherEvals is empty %}
-			In principle, the committee would also base this verdict on the lecturers' evaluation of 2013-2014. Unfortunately, this document was not available{% if course.getIsNew %}, as this verdict concerns a new course{% endif %}.
+			In principle, the committee would also base this verdict on the lecturers' evaluation of {{ year-1 }}-{{ year }}. Unfortunately, this document was not available{% if course.getIsNew %}, as this verdict concerns a new course{% endif %}.
 		{% endif %}
 		{% if conclusion.has_all_files %}
 			With these documents, the committee possessed all relevant resources that are required to come to a verdict.

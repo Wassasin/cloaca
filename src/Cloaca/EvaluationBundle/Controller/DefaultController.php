@@ -11,6 +11,14 @@ use Cloaca\EvaluationBundle\Form\Type\EvaluationType;
 
 class DefaultController extends Controller
 {
+	public function getYear() {
+		$year = date('Y') - 1; //since e.g. 2015-01-01 => 2014-2015
+		if (date('n') == 12) { // if December, we're doing this year already!
+			$year += 1;
+		}
+		return $year;
+	}
+
 	public function evaluationAction($course_id, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -51,7 +59,8 @@ class DefaultController extends Controller
 		
 		return $this->render('CloacaEvaluationBundle:Default:evaluation.html.twig', array(
 			'form' => $form->createView(),
-			'course' => $course
+			'course' => $course,
+			'year' => $this->getYear()
 		));
 	}
 
@@ -84,7 +93,8 @@ class DefaultController extends Controller
 		return $this->render('CloacaEvaluationBundle:Default:evaluation_preview'.$postfix.'.html.twig', array(
 			'course' => $course,
 			'evaluation' => $evaluation,
-			'conclusion' => $conclusion
+			'conclusion' => $conclusion,
+			'year' => $this->getYear()
 		));
 	}
 	
@@ -109,7 +119,8 @@ class DefaultController extends Controller
 				'course' => $course,
 				'evaluation' => $evaluation,
 				'conclusion' => $conclusion,
-				'internal' => false
+				'internal' => false,
+				'year' => $this->getYear()
 			))->getContent());
 		}
 		
