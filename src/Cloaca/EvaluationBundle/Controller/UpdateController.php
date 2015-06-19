@@ -116,7 +116,7 @@ class UpdateController extends Controller
 		{
 			foreach($mapping as $key => $value)
 				if($x == $key)
-					return $value;
+					return trim($value);
 			
 			return $x;
 		};
