@@ -11,7 +11,7 @@ class EvaluationType extends AbstractType
 	{
 		$builder->add('english', 'choice', array('label' => 'In welke taal wordt dit oordeel opgesteld?', 'choices' => array('Nederlands', 'Engels')));
 
-		$builder->add('summary', null, array('label' => 'Interne samenvatting. (wordt niet gepubliceerd)'));
+		$builder->add('summary', null, array('label' => 'Interne samenvatting. (wordt niet gepubliceerd)', 'required' => false));
 
 		$builder->add('verdict', new VerdictdegreeType(), array('label' => 'Algemeen oordeel n.a.v. documentatie.'));
 		$builder->add('verdict_justification', null, array('label' => 'Verantwoording t.a.v. oordeel documentatie. (wordt gepubliceerd)'));
