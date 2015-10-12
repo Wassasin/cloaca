@@ -56,3 +56,5 @@ The database can then be repopulated using the UpdateController, typically calle
 Cloaca deals with files produced (at least partially) by humans. This means that things may change, break or otherwise fail.
 
 * The course names are derived from the student evaluation xls files. These names are not always identical to the course names listed in the prospectus. If the names listed in the overview contain errors, correct these by renaming the xls file in the `Studentenevaluaties` directory of that course.
+
+* Make sure that the user that is running the PHP code can actually read the contents of the `web/data` directory. When uploading files to the CnCZ server, change the permissions on all subfolders to 755.
